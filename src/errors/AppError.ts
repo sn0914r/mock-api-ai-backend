@@ -9,7 +9,7 @@ class AppError extends Error {
     this.statusCode = statusCode;
     this.errorCode = errorCode;
     this.errors = errors;
-    
+
     // INFO:  This ensures 'AppError' is correctly identified in stack traces
     Object.setPrototypeOf(this, AppError.prototype);
   }
