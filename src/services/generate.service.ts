@@ -2,7 +2,14 @@ import pool from "../clients/pgsql";
 import { generateFakeApi } from "./grok.service";
 import { v4 as uuid } from "uuid";
 
-export const generateApiService = async (prompt: string, limit: number) => {
+export const generateApiService = async (
+  prompt: string,
+  limit: number,
+): Promise<{
+  apiId: string;
+  route: string;
+  apiUrl: string;
+}> => {
   const { route, schema, data } = await generateFakeApi(prompt, limit);
 
   const apiId = uuid();

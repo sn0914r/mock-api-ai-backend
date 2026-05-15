@@ -1,7 +1,7 @@
 import { ERROR_CODES } from "../constants/errorCodes";
 import AppError from "../errors/AppError";
 
-export const validatePatch = (
+export const validateFakeApiDataForPatch = (
   schema: Record<string, string>,
   body: Record<string, unknown>,
 ) => {

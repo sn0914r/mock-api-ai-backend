@@ -7,12 +7,4 @@ const pool = new Pool({
   ssl: isLocal ? false : { rejectUnauthorized: false },
 });
 
-pool.on("connect", () => {
-  console.log("[INFO]: Database connected successfully");
-});
-
-pool.on("error", (err) => {
-  console.error("[ERROR]: Unexpected database error", err);
-});
-
 export default pool;

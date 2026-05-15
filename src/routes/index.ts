@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { generateController } from "../controllers/generate.controller";
+import {
+  deleteFakeApiController,
+  getFakeApiController,
+  patchFakeApiController,
+  postFakeApiController,
+  putFakeApiController,
+} from "../controllers/fakeApi.controller";
 import { validate } from "../middlewares/validation";
 import { generateApiSchema } from "../schemas/generateAPiSchema";
-import { getFakeApiController } from "../controllers/getFakeApi.controller";
-import { postFakeApiController } from "../controllers/postFakeApi.controller";
-import { putFakeApiController } from "../controllers/putFakeApi.controller";
-import { patchFakeApiController } from "../controllers/patchFakeApi.controller";
-import { deleteFakeApiController } from "../controllers/deleteFakeApi.controller";
 
 const router = Router();
 

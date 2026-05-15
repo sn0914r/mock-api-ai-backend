@@ -1,11 +1,6 @@
 import type { Request, Response } from "express";
 import { generateApiService } from "../services/generate.service";
 
-interface GenerateApiRequest {
-  prompt: string;
-  limit: number;
-}
-
 interface GenerateApiResponse {
   success: boolean;
   message: string;
@@ -15,10 +10,14 @@ interface GenerateApiResponse {
     apiUrl: string;
   };
 }
+/**
+ * @route POST /generate
+ * @access Public
+ */
 
 export const generateController = async (
-  req: Request<{}, {}, GenerateApiRequest>,
-  res: Response<GenerateApiResponse>
+  req: Request<{}, {}, { prompt: string; limit: number }>,
+  res: Response<GenerateApiResponse>,
 ) => {
   const { prompt, limit } = req.body;
   const result = await generateApiService(prompt, limit);
