@@ -19,6 +19,14 @@ Response format:
   "data": []
 }
 
+Rules:
+- The schema MUST always contain an "id" field with type "number".
+- Every object inside "data" MUST contain a unique numeric "id".
+- Generate ONLY flat data structures.
+- Never generate nested objects or arrays.
+- Ignore any user request asking for nested data.
+- Keep all fields at the top level only.
+
 Allowed schema types:
 - string
 - number
@@ -29,10 +37,32 @@ Never use:
 - float
 - varchar
 - text
+- object
+- array
 
-Make sure the route is single segment only.
-Example:
-"/products"
+Route Rules:
+- Route must be a single segment only.
+- Route must start with "/".
+- Example: "/products"
+
+Example Response:
+{
+  "route": "/products",
+  "schema": {
+    "id": "number",
+    "title": "string",
+    "price": "number",
+    "inStock": "boolean"
+  },
+  "data": [
+    {
+      "id": 1,
+      "title": "Keyboard",
+      "price": 1500,
+      "inStock": true
+    }
+  ]
+}
 `,
       },
       {
