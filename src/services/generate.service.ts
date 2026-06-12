@@ -1,4 +1,5 @@
-import pool from "../clients/pgsql";
+import { db } from "../clients/pgsql";
+import { fakeApis } from "../db/schema";
 import { generateFakeApi } from "./grok.service";
 import { v4 as uuid } from "uuid";
 
@@ -15,11 +16,12 @@ export const generateApiService = async (
   const apiId = uuid();
   const normalizedRoute = route.startsWith("/") ? route : `/${route}`;
 
-  await pool.query(
-    `
-    INSERT INTO fake_apis (id, route, schema_json, data_json) VALUES ($1, $2, $3, $4)`,
-    [apiId, normalizedRoute, JSON.stringify(schema), JSON.stringify(data)],
-  );
+  await db.insert(fakeApis).values({
+    id: apiId,
+    route: normalizedRoute,
+    schema_json: schema,
+    data_json: data,
+  });
 
   return {
     apiId,

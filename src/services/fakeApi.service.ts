@@ -1,23 +1,22 @@
-import pool from "../clients/pgsql";
+import { and, eq } from "drizzle-orm";
+import { db } from "../clients/pgsql";
 import { ERROR_CODES } from "../constants/errorCodes";
+import { fakeApis } from "../db/schema";
 import AppError from "../errors/AppError";
 import { validateFakeApiData } from "../utils/validateFakeApiData";
 import { validateFakeApiDataForPatch } from "../utils/validateFakeApiDataForPatch";
 
 export const getFakeApi = async (apiId: string, route: string) => {
-  const result = await pool.query(
-    `
-        SELECT * FROM fake_apis
-        WHERE id=$1 AND route=$2;   
-    `,
-    [apiId, `/${route}`],
-  );
+  const [result] = await db
+    .select()
+    .from(fakeApis)
+    .where(and(eq(fakeApis.id, apiId), eq(fakeApis.route, `/${route}`)));
 
-  if (result.rows.length === 0) {
+  if (!result) {
     throw new AppError("Api not found", 404, ERROR_CODES.NOT_FOUND_ERROR);
   }
 
-  return result.rows[0];
+  return result;
 };
 
 export const postFakeApi = async (
@@ -28,14 +27,15 @@ export const postFakeApi = async (
   const target = await getFakeApi(apiId, route);
   validateFakeApiData(target.schema_json, data);
 
-  await pool.query(
-    `
-        UPDATE fake_apis
-        SET data_json = data_json || jsonb_build_array($1::jsonb)
-        WHERE id=$2;
-    `,
-    [data, apiId],
-  );
+  const updatedDataJson = [...target.data_json, data];
+
+  await db
+    .update(fakeApis)
+    .set({
+      data_json: updatedDataJson,
+    })
+    .where(eq(fakeApis.id, apiId));
+
   return data;
 };
 
@@ -55,14 +55,10 @@ export const putFakeApi = async (
 
   data_json[targetElementIndex] = updatedElement;
 
-  await pool.query(
-    `
-        UPDATE fake_apis
-        SET data_json=$1
-        WHERE id=$2  
-    `,
-    [JSON.stringify(data_json), apiId],
-  );
+  await db
+    .update(fakeApis)
+    .set({ data_json: data_json })
+    .where(eq(fakeApis.id, apiId));
 
   return updatedElement;
 };
@@ -87,14 +83,7 @@ export const patchFakeApi = async (
 
   data_json[targetElementIndex] = updatedElement;
 
-  await pool.query(
-    `
-        UPDATE fake_apis
-        SET data_json=$1
-        WHERE id=$2
-    `,
-    [JSON.stringify(data_json), apiId],
-  );
+  await db.update(fakeApis).set({ data_json }).where(eq(fakeApis.id, apiId));
 
   return updatedElement;
 };
@@ -112,14 +101,10 @@ export const deleteFakeApi = async (
     (e: Record<string, any>) => e.id !== Number(elementId),
   );
 
-  await pool.query(
-    `
-        UPDATE fake_apis
-        SET data_json=$1
-        WHERE id=$2
-    `,
-    [JSON.stringify(filteredData), apiId],
-  );
+  await db
+    .update(fakeApis)
+    .set({ data_json: filteredData })
+    .where(eq(fakeApis.id, apiId));
 };
 
 /**

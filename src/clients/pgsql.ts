@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
 
 const isLocal = process.env.DATABASE_URL?.includes("localhost");
 
@@ -7,4 +8,4 @@ const pool = new Pool({
   ssl: isLocal ? false : { rejectUnauthorized: false },
 });
 
-export default pool;
+export const db = drizzle(pool);
