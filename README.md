@@ -4,9 +4,9 @@ AI-powered backend for generating and hosting dynamic mock REST APIs with persis
 
 ---
 
-## Live Demo
+## API Documentation
 
-Health Endpoint: `https://site--mock-api-ai-backend--gxd2ltpdfxvn.code.run/health`
+[https://site--mock-api-ai-backend--gxd2ltpdfxvn.code.run/docs](https://site--mock-api-ai-backend--gxd2ltpdfxvn.code.run/docs)
 
 ---
 
@@ -60,7 +60,7 @@ Health Endpoint: `https://site--mock-api-ai-backend--gxd2ltpdfxvn.code.run/healt
 ### Database
 
 - PostgreSQL
-- pg
+- Drizzle (ORM)
 
 ### Validation & Security
 
@@ -78,34 +78,28 @@ Health Endpoint: `https://site--mock-api-ai-backend--gxd2ltpdfxvn.code.run/healt
 ## Folder Structure
 
 ```txt
-src/
-├── clients/
-│   ├── groq.ts
-│   └── pgsql.ts
-├── constants/
-│   └── errorCodes.ts
-├── controllers/
-│   ├── fakeApi.controller.ts
-│   └── generate.controller.ts
-├── errors/
-│   └── AppError.ts
-├── middlewares/
-│   ├── errorHandler.ts
-│   └── validation.ts
-├── routes/
-│   └── index.ts
-├── schemas/
-│   ├── fakeApiSchema.ts
-│   └── generateApiSchema.ts
-├── services/
-│   ├── fakeApi.service.ts
-│   ├── generate.service.ts
-│   └── groq.service.ts
-├── utils/
-│   ├── validateFakeApiData.ts
-│   └── validateFakeApiDataForPatch.ts
-├── app.ts
-└── server.ts
+.
+├── docs/
+├── drizzle/
+│   └── meta/
+├── src/
+│   ├── clients/
+│   ├── configs/
+│   ├── constants/
+│   ├── controllers/
+│   ├── db/
+│   ├── errors/
+│   ├── middlewares/
+│   ├── routes/
+│   ├── schemas/
+│   ├── services/
+│   └── utils/
+├── .env.example
+├── .gitignore
+├── drizzle.config.ts
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
 ---
