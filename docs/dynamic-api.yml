@@ -1,0 +1,244 @@
+paths:
+  # ==========================================
+  # Get Mock API List
+  # ==========================================
+  /api/{apiId}/{route}:
+    get:
+      tags:
+        - Dynamic API
+      summary: Get mock data
+      description: Retrieve the list of mock data generated for this specific API and route.
+      parameters:
+        - in: path
+          name: apiId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the generated API
+          example: usr_123abc
+        - in: path
+          name: route
+          required: true
+          schema:
+            type: string
+          description: The dynamically generated route name
+          example: developers
+      responses:
+        "200":
+          description: Successfully retrieved mock data list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        "404":
+          description: API or route not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # ==========================================
+    # Create Mock Entry
+    # ==========================================
+    post:
+      tags:
+        - Dynamic API
+      summary: Create new mock entry
+      description: Add a new JSON object to the dynamic mock data list.
+      parameters:
+        - in: path
+          name: apiId
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the generated API
+          example: usr_123abc
+        - in: path
+          name: route
+          required: true
+          schema:
+            type: string
+          description: The dynamically generated route name
+          example: developers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              example: { "name": "Sivananda Reddy", "role": "Backend Engineer", "skills": ["TypeScript", "Express", "PostgreSQL"] }
+      responses:
+        "201":
+          description: Successfully created mock entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    additionalProperties: true
+        "404":
+          description: API or route not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ==========================================
+  # Replace Mock Entry
+  # ==========================================
+  /api/{apiId}/{route}/{elementId}:
+    put:
+      tags:
+        - Dynamic API
+      summary: Replace mock entry
+      description: Fully replace an existing mock entry by its ID.
+      parameters:
+        - in: path
+          name: apiId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: route
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: elementId
+          required: true
+          schema:
+            type: string
+          description: The ID of the specific element to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: Successfully replaced mock entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    additionalProperties: true
+        "404":
+          description: API, route, or element not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # ==========================================
+    # Update Mock Entry
+    # ==========================================
+    patch:
+      tags:
+        - Dynamic API
+      summary: Update mock entry
+      description: Partially update an existing mock entry by its ID.
+      parameters:
+        - in: path
+          name: apiId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: route
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: elementId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        "200":
+          description: Successfully updated mock entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    additionalProperties: true
+        "404":
+          description: API, route, or element not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # ==========================================
+    # Delete Mock Entry
+    # ==========================================
+    delete:
+      tags:
+        - Dynamic API
+      summary: Delete mock entry
+      description: Delete an existing mock entry by its ID.
+      parameters:
+        - in: path
+          name: apiId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: route
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: elementId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully deleted mock entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Element deleted successfully
+        "404":
+          description: API, route, or element not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"

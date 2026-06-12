@@ -1,0 +1,66 @@
+paths:
+  # ==========================================
+  # Generate Fake API
+  # ==========================================
+  /generate:
+    post:
+      tags:
+        - Generator
+      summary: Generate a new mock API
+      description: Create a dynamic mock API structure and seed it with data using an AI prompt.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - prompt
+                - limit
+              properties:
+                prompt:
+                  type: string
+                  description: Describe the type of data and API structure you want to generate
+                  example: "Generate 10 software developer profiles their tech stack"
+                limit:
+                  type: integer
+                  description: Number of records to generate
+                  example: 10
+      responses:
+        "200":
+          description: API created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: API created successfully
+                  data:
+                    type: object
+                    properties:
+                      apiId:
+                        type: string
+                        example: "usr_123abc"
+                      route:
+                        type: string
+                        example: "developers"
+                      apiUrl:
+                        type: string
+                        example: "/api/usr_123abc/developers"
+        "400":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
